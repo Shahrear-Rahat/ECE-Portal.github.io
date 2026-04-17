@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Semesters — ECE Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#1a56db;--blue-dark:#1040b0;--blue-light:#e8f0fe;--navy:#0a1628;--white:#fff;--gray:#f4f6fb;--text:#1e2535;--muted:#6b7a99;--accent:#f59e0b;--border:#dde4f0}
+body{font-family:'DM Sans',sans-serif;background:var(--gray);color:var(--text)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:var(--blue);text-decoration:none;display:flex;align-items:center;gap:10px}
+.nav-logo .dot{width:8px;height:8px;background:var(--accent);border-radius:50%}
+.nav-links{display:flex;gap:0.25rem;list-style:none}
+.nav-links a{text-decoration:none;color:var(--text);font-size:0.875rem;font-weight:500;padding:6px 14px;border-radius:6px;transition:all 0.2s}
+.nav-links a:hover,.nav-links a.active{background:var(--blue-light);color:var(--blue)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px}
+.mobile-menu{display:none;flex-direction:column;gap:4px;background:#fff;padding:1rem;border-top:1px solid var(--border)}
+.mobile-menu a{text-decoration:none;color:var(--text);font-size:0.95rem;padding:10px 14px;border-radius:8px;font-weight:500;display:block}
+
+.page-hero{background:var(--navy);padding:6rem 2rem 3rem;text-align:center}
+.page-hero .label{font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#60a5fa;margin-bottom:0.75rem}
+.page-hero h1{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:0.5rem}
+.page-hero p{color:#94a3b8}
+
+.layout{display:grid;grid-template-columns:220px 1fr;gap:1.5rem;max-width:1100px;margin:0 auto;padding:2rem 1.5rem}
+
+/* Sidebar */
+.sidebar{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1rem;height:fit-content;position:sticky;top:80px}
+.sidebar-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;padding:0 0.5rem;margin-bottom:0.75rem}
+.year-group{margin-bottom:0.5rem}
+.year-label{font-size:0.75rem;font-weight:600;color:var(--muted);padding:4px 8px;text-transform:uppercase;letter-spacing:0.06em}
+.sem-btn{display:block;width:100%;text-align:left;padding:8px 12px;border-radius:8px;border:none;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--text);transition:all 0.15s;font-weight:400}
+.sem-btn:hover{background:var(--gray);color:var(--blue)}
+.sem-btn.active{background:var(--blue-light);color:var(--blue);font-weight:500}
+
+/* Content area */
+.content{min-height:60vh}
+.sem-panel{display:none}
+.sem-panel.active{display:block}
+.sem-header{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between}
+.sem-header h2{font-family:'Syne',sans-serif;font-weight:700;font-size:1.4rem}
+.sem-header span{font-size:0.85rem;color:var(--muted)}
+
+.subject-list{display:flex;flex-direction:column;gap:0.75rem}
+.subject-card{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.subject-head{padding:1rem 1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.15s}
+.subject-head:hover{background:var(--gray)}
+.subject-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.98rem}
+.subject-code{font-size:0.8rem;color:var(--muted);margin-top:2px}
+.subject-arrow{font-size:1rem;color:var(--muted);transition:transform 0.2s}
+.subject-card.open .subject-arrow{transform:rotate(90deg)}
+.subject-body{display:none;padding:0 1.25rem 1.25rem;border-top:1px solid var(--border)}
+.subject-card.open .subject-body{display:block}
+.materials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.6rem;margin-top:1rem}
+.mat-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0.9rem 0.75rem;background:var(--gray);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);transition:all 0.2s;text-align:center}
+.mat-btn:hover{background:var(--blue-light);border-color:var(--blue);color:var(--blue)}
+.mat-icon{font-size:1.5rem}
+.mat-label{font-size:0.8rem;font-weight:500}
+
+/* Add subject form */
+.add-subject-btn{background:var(--blue-light);color:var(--blue);border:1px dashed var(--blue);border-radius:10px;padding:0.75rem;width:100%;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;font-size:0.9rem;margin-top:0.5rem}
+.add-subject-btn:hover{background:var(--blue);color:#fff}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center}
+.modal.open{display:flex}
+.modal-box{background:#fff;border-radius:16px;padding:2rem;width:90%;max-width:480px}
+.modal-box h3{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px;margin-bottom:0.75rem}
+label{font-size:0.8rem;font-weight:500;color:var(--muted)}
+input,select,textarea{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--text);background:#fff;outline:none;transition:border-color 0.2s;width:100%}
+input:focus,select:focus{border-color:var(--blue)}
+.modal-row{display:flex;gap:0.75rem;margin-top:0.5rem}
+.btn-cancel{flex:1;padding:9px;border:1px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-save{flex:1;padding:9px;background:var(--blue);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500}
+
+@media(max-width:768px){
+  .nav-links{display:none}.hamburger{display:flex}
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static}
+  nav{padding:0 1rem}
+  .materials-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="dot"></span>ECE Portal</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="notices.html">Notices</a></li>
+      <li><a href="semesters.html" class="active">Semesters</a></li>
+      <li><a href="routine.html">Routine</a></li>
+      <li><a href="students.html">Students</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a><a href="notices.html">Notices</a><a href="semesters.html">Semesters</a><a href="routine.html">Routine</a><a href="students.html">Students</a>
+  </div>
+</nav>
+<div class="page-hero">
+  <div class="label">Academic Resources</div>
+  <h1>📚 Semester Materials</h1>
+  <p>Study materials, past questions, and resources — organized by semester</p>
+</div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-title">Semesters</div>
+    <div class="year-group">
+      <div class="year-label">Year 1</div>
+      <button class="sem-btn active" onclick="showSem('1-1',this)">1st Semester (1-1)</button>
+      <button class="sem-btn" onclick="showSem('1-2',this)">2nd Semester (1-2)</button>
+    </div>
+    <div class="year-group">
+      <div class="year-label">Year 2</div>
+      <button class="sem-btn" onclick="showSem('2-1',this)">3rd Semester (2-1)</button>
+      <button class="sem-btn" onclick="showSem('2-2',this)">4th Semester (2-2)</button>
+    </div>
+    <div class="year-group">
+      <div class="year-label">Year 3</div>
+      <button class="sem-btn" onclick="showSem('3-1',this)">5th Semester (3-1)</button>
+      <button class="sem-btn" onclick="showSem('3-2',this)">6th Semester (3-2)</button>
+    </div>
+    <div class="year-group">
+      <div class="year-label">Year 4</div>
+      <button class="sem-btn" onclick="showSem('4-1',this)">7th Semester (4-1)</button>
+      <button class="sem-btn" onclick="showSem('4-2',this)">8th Semester (4-2)</button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content" id="content-area"></div>
+</div>
+
+<!-- Modal for adding subject -->
+<div class="modal" id="addModal">
+  <div class="modal-box">
+    <h3>Add New Subject</h3>
+    <div class="form-group"><label>Subject Name</label><input type="text" id="m-name" placeholder="e.g. Digital Electronics"/></div>
+    <div class="form-group"><label>Subject Code</label><input type="text" id="m-code" placeholder="e.g. ECE-301"/></div>
+    <div id="mat-links">
+      <p style="font-size:0.82rem;color:var(--muted);margin-bottom:0.5rem">Add Google Drive links for each material (leave blank if none):</p>
+    </div>
+    <div class="modal-row">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveSubject()">Save Subject</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const MATS=['Materials','CT Questions','Final Questions','Board Viva Questions','Quiz Questions'];
+const MAT_ICONS=['📖','📝','📄','🎤','❓'];
+const KEY='ece_semesters';
+let currentSem='1-1';
+
+const defaultData={
+  '1-1':{title:'1st Semester',year:'Year 1',subjects:[
+    {name:'Mathematics I',code:'MATH-101',links:['','','','','']},
+    {name:'Physics',code:'PHY-101',links:['','','','','']},
+    {name:'Engineering Drawing',code:'ME-101',links:['','','','','']},
+    {name:'Basic Electrical Engineering',code:'ECE-101',links:['','','','','']},
+  ]},
+  '1-2':{title:'2nd Semester',year:'Year 1',subjects:[
+    {name:'Mathematics II',code:'MATH-102',links:['','','','','']},
+    {name:'Chemistry',code:'CHEM-101',links:['','','','','']},
+    {name:'Electronic Devices',code:'ECE-102',links:['','','','','']},
+    {name:'Programming Fundamentals',code:'CSE-101',links:['','','','','']},
+  ]},
+  '2-1':{title:'3rd Semester',year:'Year 2',subjects:[
+    {name:'Circuit Theory',code:'ECE-201',links:['','','','','']},
+    {name:'Digital Logic Design',code:'ECE-202',links:['','','','','']},
+    {name:'Mathematics III',code:'MATH-201',links:['','','','','']},
+  ]},
+  '2-2':{title:'4th Semester',year:'Year 2',subjects:[
+    {name:'Signals & Systems',code:'ECE-203',links:['','','','','']},
+    {name:'Analog Electronics',code:'ECE-204',links:['','','','','']},
+    {name:'Electromagnetic Fields',code:'ECE-205',links:['','','','','']},
+  ]},
+  '3-1':{title:'5th Semester',year:'Year 3',subjects:[
+    {name:'Digital Electronics',code:'ECE-301',links:['','','','','']},
+    {name:'Communication Theory',code:'ECE-302',links:['','','','','']},
+    {name:'Microprocessors',code:'ECE-303',links:['','','','','']},
+  ]},
+  '3-2':{title:'6th Semester',year:'Year 3',subjects:[
+    {name:'VLSI Design',code:'ECE-304',links:['','','','','']},
+    {name:'Digital Signal Processing',code:'ECE-305',links:['','','','','']},
+    {name:'Control Systems',code:'ECE-306',links:['','','','','']},
+  ]},
+  '4-1':{title:'7th Semester',year:'Year 4',subjects:[
+    {name:'RF & Microwave Engineering',code:'ECE-401',links:['','','','','']},
+    {name:'Embedded Systems',code:'ECE-402',links:['','','','','']},
+    {name:'Optical Fiber Communication',code:'ECE-403',links:['','','','','']},
+  ]},
+  '4-2':{title:'8th Semester',year:'Year 4',subjects:[
+    {name:'Wireless Communications',code:'ECE-404',links:['','','','','']},
+    {name:'Project / Thesis',code:'ECE-499',links:['','','','','']},
+  ]},
+};
+
+function getData(){const d=localStorage.getItem(KEY);return d?JSON.parse(d):defaultData}
+function saveData(d){localStorage.setItem(KEY,JSON.stringify(d))}
+
+function renderSem(sem){
+  const data=getData();
+  const s=data[sem];
+  if(!s)return;
+  return`<div class="sem-panel active">
+    <div class="sem-header">
+      <div><h2>Semester ${s.title}</h2><span>${s.year}</span></div>
+      <span style="font-size:0.85rem;color:var(--muted)">${s.subjects.length} subjects</span>
+    </div>
+    <div class="subject-list">
+      ${s.subjects.map((sub,i)=>`
+      <div class="subject-card" id="sc-${sem}-${i}">
+        <div class="subject-head" onclick="toggleSubject('${sem}',${i})">
+          <div>
+            <div class="subject-name">${sub.name}</div>
+            <div class="subject-code">${sub.code}</div>
+          </div>
+          <span class="subject-arrow">›</span>
+        </div>
+        <div class="subject-body">
+          <div class="materials-grid">
+            ${MATS.map((m,mi)=>sub.links[mi]
+              ?`<a href="${sub.links[mi]}" target="_blank" class="mat-btn"><span class="mat-icon">${MAT_ICONS[mi]}</span><span class="mat-label">${m}</span></a>`
+              :`<div class="mat-btn" style="opacity:0.4;cursor:default"><span class="mat-icon">${MAT_ICONS[mi]}</span><span class="mat-label">${m}</span><span style="font-size:0.7rem;color:var(--muted)">Not added</span></div>`
+            ).join('')}
+          </div>
+          <div style="margin-top:1rem">
+            <button onclick="openEditLinks('${sem}',${i})" style="font-size:0.8rem;padding:5px 12px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;color:var(--blue)">✏️ Edit links</button>
+          </div>
+        </div>
+      </div>`).join('')}
+      <button class="add-subject-btn" onclick="openAddModal('${sem}')">+ Add Subject</button>
+    </div>
+  </div>`;
+}
+
+function showSem(sem,btn){
+  currentSem=sem;
+  document.querySelectorAll('.sem-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('content-area').innerHTML=renderSem(sem);
+}
+
+function toggleSubject(sem,i){
+  const card=document.getElementById(`sc-${sem}-${i}`);
+  card.classList.toggle('open');
+}
+
+let editingSem='',editingIdx=-1;
+function openAddModal(sem){editingSem=sem;editingIdx=-1;
+  document.getElementById('m-name').value='';document.getElementById('m-code').value='';
+  const ml=document.getElementById('mat-links');
+  ml.innerHTML='<p style="font-size:0.82rem;color:var(--muted);margin-bottom:0.5rem">Google Drive links (optional):</p>'+
+    MATS.map((m,i)=>`<div class="form-group"><label>${m}</label><input type="url" id="ml-${i}" placeholder="https://drive.google.com/..."/></div>`).join('');
+  document.getElementById('addModal').classList.add('open');
+}
+
+function openEditLinks(sem,idx){editingSem=sem;editingIdx=idx;
+  const data=getData();const sub=data[sem].subjects[idx];
+  document.getElementById('m-name').value=sub.name;document.getElementById('m-code').value=sub.code;
+  const ml=document.getElementById('mat-links');
+  ml.innerHTML='<p style="font-size:0.82rem;color:var(--muted);margin-bottom:0.5rem">Google Drive links (leave blank if none):</p>'+
+    MATS.map((m,i)=>`<div class="form-group"><label>${m}</label><input type="url" id="ml-${i}" value="${sub.links[i]||''}" placeholder="https://drive.google.com/..."/></div>`).join('');
+  document.getElementById('addModal').classList.add('open');
+}
+
+function closeModal(){document.getElementById('addModal').classList.remove('open')}
+
+function saveSubject(){
+  const name=document.getElementById('m-name').value.trim();
+  const code=document.getElementById('m-code').value.trim();
+  if(!name){alert('Please enter subject name');return}
+  const links=MATS.map((_,i)=>(document.getElementById(`ml-${i}`)||{value:''}).value.trim());
+  const data=getData();
+  if(editingIdx>=0){data[editingSem].subjects[editingIdx]={name,code,links}}
+  else{data[editingSem].subjects.push({name,code,links})}
+  saveData(data);closeModal();
+  document.getElementById('content-area').innerHTML=renderSem(editingSem);
+}
+
+function toggleMenu(){const m=document.getElementById('mobileMenu');m.style.display=m.style.display==='flex'?'none':'flex'}
+document.getElementById('content-area').innerHTML=renderSem('1-1');
+</script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Main Notices — ECE Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#1a56db;--blue-dark:#1040b0;--blue-light:#e8f0fe;--navy:#0a1628;--white:#ffffff;--gray:#f4f6fb;--text:#1e2535;--muted:#6b7a99;--accent:#f59e0b;--border:#dde4f0}
+body{font-family:'DM Sans',sans-serif;background:var(--gray);color:var(--text)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:var(--blue);text-decoration:none;display:flex;align-items:center;gap:10px}
+.nav-logo .dot{width:8px;height:8px;background:var(--accent);border-radius:50%}
+.nav-links{display:flex;gap:0.25rem;list-style:none}
+.nav-links a{text-decoration:none;color:var(--text);font-size:0.875rem;font-weight:500;padding:6px 14px;border-radius:6px;transition:all 0.2s}
+.nav-links a:hover,.nav-links a.active{background:var(--blue-light);color:var(--blue)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px}
+.mobile-menu{display:none;flex-direction:column;gap:4px;background:#fff;padding:1rem;border-top:1px solid var(--border)}
+.mobile-menu a{text-decoration:none;color:var(--text);font-size:0.95rem;padding:10px 14px;border-radius:8px;font-weight:500;display:block}
+.mobile-menu a:hover{background:var(--blue-light);color:var(--blue)}
+
+.page-hero{background:var(--navy);padding:6rem 2rem 3rem;text-align:center}
+.page-hero .label{font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#60a5fa;margin-bottom:0.75rem}
+.page-hero h1{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:0.5rem}
+.page-hero p{color:#94a3b8;font-size:1rem}
+
+main{max-width:800px;margin:0 auto;padding:2.5rem 1.5rem}
+
+.filter-row{display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.filter-btn{padding:6px 16px;border-radius:999px;border:1px solid var(--border);background:#fff;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--muted);cursor:pointer;transition:all 0.2s}
+.filter-btn.active,.filter-btn:hover{background:var(--blue);border-color:var(--blue);color:#fff}
+
+.notice-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem;position:relative;transition:box-shadow 0.2s}
+.notice-card:hover{box-shadow:0 4px 16px rgba(26,86,219,0.08)}
+.notice-card.urgent{border-left:4px solid #ef4444}
+.notice-card.info{border-left:4px solid var(--blue)}
+.notice-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:0.6rem}
+.notice-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;color:var(--text)}
+.tag{font-size:0.7rem;padding:3px 10px;border-radius:6px;font-weight:600;white-space:nowrap}
+.tag-urgent{background:#fee2e2;color:#b91c1c}
+.tag-info{background:#eff6ff;color:#1d4ed8}
+.tag-exam{background:#fef3c7;color:#92400e}
+.tag-lab{background:#f0fdf4;color:#166534}
+.notice-body{color:var(--muted);font-size:0.9rem;line-height:1.6;margin-bottom:0.75rem}
+.notice-meta{display:flex;align-items:center;gap:1rem;font-size:0.78rem;color:#9ca3af}
+.notice-meta span{display:flex;align-items:center;gap:4px}
+.notice-file{display:inline-flex;align-items:center;gap:6px;margin-top:0.6rem;background:var(--blue-light);color:var(--blue);padding:5px 12px;border-radius:6px;font-size:0.82rem;font-weight:500;text-decoration:none}
+.notice-file:hover{background:var(--blue);color:#fff}
+
+.pin-badge{position:absolute;top:1rem;right:1rem;font-size:0.65rem;background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:4px;font-weight:600}
+
+/* Add form (CR only) */
+.add-section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:2rem}
+.add-section summary{font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;color:var(--blue);font-size:0.95rem}
+.add-section summary:hover{opacity:0.8}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group.full{grid-column:1/-1}
+label{font-size:0.8rem;font-weight:500;color:var(--muted)}
+input,select,textarea{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--text);background:#fff;outline:none;transition:border-color 0.2s}
+input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+textarea{resize:vertical;min-height:80px}
+.btn-submit{background:var(--blue);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;font-size:0.9rem;margin-top:0.5rem}
+.btn-submit:hover{background:var(--blue-dark)}
+
+@media(max-width:768px){
+  .nav-links{display:none}.hamburger{display:flex}
+  .form-grid{grid-template-columns:1fr}
+  nav{padding:0 1rem}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="dot"></span>ECE Portal</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="notices.html" class="active">Notices</a></li>
+      <li><a href="semesters.html">Semesters</a></li>
+      <li><a href="routine.html">Routine</a></li>
+      <li><a href="students.html">Students</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="notices.html">Notices</a>
+    <a href="semesters.html">Semesters</a>
+    <a href="routine.html">Routine</a>
+    <a href="students.html">Students</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="label">Announcements</div>
+  <h1>📢 Main Notices</h1>
+  <p>Important departmental notices from the Class Representative</p>
+</div>
+
+<main>
+  <!-- CR Add Notice Form -->
+  <details class="add-section">
+    <summary>➕ Add New Notice (CR Only)</summary>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Notice Title</label>
+        <input type="text" id="n-title" placeholder="e.g. Mid-term exam schedule"/>
+      </div>
+      <div class="form-group full">
+        <label>Details</label>
+        <textarea id="n-body" placeholder="Write the full notice here..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="n-tag">
+          <option value="urgent">Urgent</option>
+          <option value="exam">Exam</option>
+          <option value="lab">Lab</option>
+          <option value="info">Info</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>File Link (Google Drive URL, optional)</label>
+        <input type="url" id="n-file" placeholder="https://drive.google.com/..."/>
+      </div>
+    </div>
+    <button class="btn-submit" onclick="addNotice()">Post Notice</button>
+  </details>
+
+  <!-- Filter -->
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterNotices('all',this)">All</button>
+    <button class="filter-btn" onclick="filterNotices('urgent',this)">Urgent</button>
+    <button class="filter-btn" onclick="filterNotices('exam',this)">Exam</button>
+    <button class="filter-btn" onclick="filterNotices('lab',this)">Lab</button>
+    <button class="filter-btn" onclick="filterNotices('info',this)">Info</button>
+  </div>
+
+  <div id="notices-list"></div>
+</main>
+
+<script>
+const NOTICES_KEY='ece_main_notices';
+const tagMap={urgent:{label:'Urgent',cls:'tag-urgent',cardCls:'urgent'},exam:{label:'Exam',cls:'tag-exam',cardCls:''},lab:{label:'Lab',cls:'tag-lab',cardCls:''},info:{label:'Info',cls:'tag-info',cardCls:'info'}};
+let currentFilter='all';
+
+const defaultNotices=[
+  {id:1,title:'Mid-term Examination Schedule',body:'Mid-term exams for 3-1 and 3-2 will begin next Monday. Please check the routine page for the full schedule. Bring your student ID.',tag:'exam',date:'Today',file:'',pinned:true},
+  {id:2,title:'Lab Report Submission Deadline Extended',body:'The deadline for the Electronics Lab report has been extended to next Friday at 5 PM. Submit via the class representative.',tag:'urgent',date:'Yesterday',file:'',pinned:false},
+  {id:3,title:'Board Viva Schedule Updated',body:'Please check the semester page for the updated board viva schedule. All students must confirm attendance with the CR by Thursday.',tag:'info',date:'2 days ago',file:'',pinned:false},
+  {id:4,title:'Project Proposal Submission',body:'Final year project proposals must be submitted in soft copy (PDF) by the end of this week. Format guidelines are attached.',tag:'info',date:'3 days ago',file:'',pinned:false},
+];
+
+function getNotices(){const d=localStorage.getItem(NOTICES_KEY);return d?JSON.parse(d):defaultNotices}
+function saveNotices(arr){localStorage.setItem(NOTICES_KEY,JSON.stringify(arr))}
+
+function renderNotices(filter){
+  const arr=getNotices();
+  const list=document.getElementById('notices-list');
+  const filtered=filter==='all'?arr:arr.filter(n=>n.tag===filter);
+  if(!filtered.length){list.innerHTML='<p style="color:var(--muted);text-align:center;padding:2rem">No notices in this category.</p>';return}
+  list.innerHTML=filtered.map(n=>{
+    const t=tagMap[n.tag]||tagMap.info;
+    return`<div class="notice-card ${t.cardCls}" data-tag="${n.tag}">
+      ${n.pinned?'<span class="pin-badge">📌 Pinned</span>':''}
+      <div class="notice-top">
+        <div class="notice-title">${n.title}</div>
+        <span class="tag ${t.cls}">${t.label}</span>
+      </div>
+      <div class="notice-body">${n.body}</div>
+      ${n.file?`<a href="${n.file}" target="_blank" class="notice-file">📎 Attachment</a>`:''}
+      <div class="notice-meta"><span>🗓 ${n.date}</span></div>
+    </div>`
+  }).join('');
+}
+
+function filterNotices(tag,btn){
+  currentFilter=tag;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderNotices(tag);
+}
+
+function addNotice(){
+  const title=document.getElementById('n-title').value.trim();
+  const body=document.getElementById('n-body').value.trim();
+  const tag=document.getElementById('n-tag').value;
+  const file=document.getElementById('n-file').value.trim();
+  if(!title||!body){alert('Please fill in title and details.');return}
+  const arr=getNotices();
+  arr.unshift({id:Date.now(),title,body,tag,date:'Just now',file,pinned:false});
+  saveNotices(arr);
+  renderNotices(currentFilter);
+  document.getElementById('n-title').value='';
+  document.getElementById('n-body').value='';
+  document.getElementById('n-file').value='';
+  alert('Notice posted!');
+}
+
+function toggleMenu(){const m=document.getElementById('mobileMenu');m.style.display=m.style.display==='flex'?'none':'flex'}
+renderNotices('all');
+</script>
+</body>
+</html>

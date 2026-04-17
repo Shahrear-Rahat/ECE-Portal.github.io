@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Students — ECE Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#1a56db;--blue-dark:#1040b0;--blue-light:#e8f0fe;--navy:#0a1628;--white:#fff;--gray:#f4f6fb;--text:#1e2535;--muted:#6b7a99;--accent:#f59e0b;--border:#dde4f0}
+body{font-family:'DM Sans',sans-serif;background:var(--gray);color:var(--text)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:var(--blue);text-decoration:none;display:flex;align-items:center;gap:10px}
+.nav-logo .dot{width:8px;height:8px;background:var(--accent);border-radius:50%}
+.nav-links{display:flex;gap:0.25rem;list-style:none}
+.nav-links a{text-decoration:none;color:var(--text);font-size:0.875rem;font-weight:500;padding:6px 14px;border-radius:6px;transition:all 0.2s}
+.nav-links a:hover,.nav-links a.active{background:var(--blue-light);color:var(--blue)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px}
+.mobile-menu{display:none;flex-direction:column;gap:4px;background:#fff;padding:1rem;border-top:1px solid var(--border)}
+.mobile-menu a{text-decoration:none;color:var(--text);font-size:0.95rem;padding:10px 14px;border-radius:8px;font-weight:500;display:block}
+.page-hero{background:var(--navy);padding:6rem 2rem 3rem;text-align:center}
+.page-hero .label{font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#60a5fa;margin-bottom:0.75rem}
+.page-hero h1{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:0.5rem}
+.page-hero p{color:#94a3b8}
+main{max-width:1100px;margin:0 auto;padding:2rem 1.5rem}
+.toolbar{display:flex;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center}
+.search-box{flex:1;min-width:200px;position:relative}
+.search-box input{width:100%;padding:9px 12px 9px 38px;border:1px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:0.9rem;background:#fff;outline:none;transition:border-color 0.2s}
+.search-box input:focus{border-color:var(--blue)}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:0.9rem}
+.filter-sel{padding:9px 12px;border:1px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:0.9rem;background:#fff;color:var(--text);outline:none;cursor:pointer}
+.count-badge{font-size:0.85rem;color:var(--muted);white-space:nowrap}
+.students-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+.student-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center;transition:all 0.2s;cursor:pointer}
+.student-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 6px 20px rgba(26,86,219,0.1)}
+.avatar{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;margin:0 auto 0.75rem;color:#fff}
+.student-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;margin-bottom:0.25rem}
+.student-roll{font-size:0.8rem;color:var(--muted)}
+.student-contact{margin-top:0.6rem;font-size:0.8rem;color:var(--blue);display:flex;justify-content:center;gap:0.75rem}
+.student-contact a{color:var(--blue);text-decoration:none}
+.student-contact a:hover{text-decoration:underline}
+
+/* Add student */
+.add-bar{display:flex;justify-content:flex-end;margin-bottom:1rem}
+.btn-add-student{background:var(--blue);color:#fff;border:none;padding:9px 18px;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;gap:6px}
+.btn-add-student:hover{background:var(--blue-dark)}
+
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;align-items:flex-start;justify-content:center;padding-top:80px;overflow-y:auto}
+.modal.open{display:flex}
+.modal-box{background:#fff;border-radius:16px;padding:2rem;width:90%;max-width:500px;margin-bottom:2rem}
+.modal-box h3{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1.25rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.form-group{display:flex;flex-direction:column;gap:4px;margin-bottom:0.75rem}
+.form-group.full{grid-column:1/-1}
+label{font-size:0.8rem;font-weight:500;color:var(--muted)}
+input,select{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--text);background:#fff;outline:none;width:100%}
+input:focus,select:focus{border-color:var(--blue)}
+.modal-btns{display:flex;gap:0.75rem;margin-top:0.5rem}
+.btn-cancel{flex:1;padding:9px;border:1px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-save{flex:1;padding:9px;background:var(--blue);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500}
+
+.no-results{text-align:center;padding:3rem;color:var(--muted)}
+@media(max-width:768px){.nav-links{display:none}.hamburger{display:flex}nav{padding:0 1rem}.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="dot"></span>ECE Portal</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="notices.html">Notices</a></li>
+      <li><a href="semesters.html">Semesters</a></li>
+      <li><a href="routine.html">Routine</a></li>
+      <li><a href="students.html" class="active">Students</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a><a href="notices.html">Notices</a><a href="semesters.html">Semesters</a><a href="routine.html">Routine</a><a href="students.html">Students</a>
+  </div>
+</nav>
+<div class="page-hero">
+  <div class="label">Directory</div>
+  <h1>👥 Students</h1>
+  <p>All ECE department students — contact info and details</p>
+</div>
+<main>
+  <div class="add-bar"><button class="btn-add-student" onclick="openModal()">+ Add Student</button></div>
+  <div class="toolbar">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="Search by name or roll..." oninput="renderStudents()"/>
+    </div>
+    <select class="filter-sel" id="filter-sem" onchange="renderStudents()">
+      <option value="">All Semesters</option>
+      <option>1-1</option><option>1-2</option><option>2-1</option><option>2-2</option>
+      <option>3-1</option><option>3-2</option><option>4-1</option><option>4-2</option>
+    </select>
+    <span class="count-badge" id="count-badge"></span>
+  </div>
+  <div class="students-grid" id="students-grid"></div>
+</main>
+
+<!-- Modal -->
+<div class="modal" id="addModal">
+  <div class="modal-box">
+    <h3 id="modal-title">Add Student</h3>
+    <div class="form-row">
+      <div class="form-group full"><label>Full Name</label><input type="text" id="s-name" placeholder="Student name"/></div>
+      <div class="form-group"><label>Roll Number</label><input type="text" id="s-roll" placeholder="e.g. 2101001"/></div>
+      <div class="form-group"><label>Semester</label>
+        <select id="s-sem">
+          <option>1-1</option><option>1-2</option><option>2-1</option><option>2-2</option>
+          <option>3-1</option><option>3-2</option><option>4-1</option><option>4-2</option>
+        </select>
+      </div>
+      <div class="form-group full"><label>Phone (optional)</label><input type="tel" id="s-phone" placeholder="01XXXXXXXXX"/></div>
+      <div class="form-group full"><label>Email (optional)</label><input type="email" id="s-email" placeholder="student@email.com"/></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveStudent()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const KEY='ece_students';
+let editingId=null;
+
+const COLORS=['#1a56db','#0891b2','#059669','#7c3aed','#db2777','#d97706','#dc2626','#2563eb'];
+function getColor(name){const c=name.charCodeAt(0)%COLORS.length;return COLORS[c]}
+function initials(name){return name.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'?'}
+
+// 20 sample students to get started
+const defaults=Array.from({length:20},(_, i)=>{
+  const names=['Md. Rahim Uddin','Fatima Khatun','Sudipta Chakraborty','Nusrat Jahan','Arif Hossain','Priya Sharma','Tanvir Ahmed','Meherun Nesa','Rajib Das','Sultana Begum','Imran Khan','Lipi Akter','Ashraf Ali','Rima Roy','Farid Hasan','Tania Islam','Nasim Ahmed','Dipti Paul','Sajjad Hossain','Mousumi Datta'];
+  const sems=['1-1','1-2','2-1','2-2','3-1','3-2','4-1','4-2'];
+  return{id:i+1,name:names[i]||`Student ${i+1}`,roll:`210${String(1001+i).slice(1)}`,sem:sems[i%8],phone:'',email:''}
+});
+
+function getStudents(){const d=localStorage.getItem(KEY);return d?JSON.parse(d):defaults}
+function saveStudents(arr){localStorage.setItem(KEY,JSON.stringify(arr))}
+
+function renderStudents(){
+  const arr=getStudents();
+  const q=(document.getElementById('search-input').value||'').toLowerCase();
+  const sem=document.getElementById('filter-sem').value;
+  let filtered=arr.filter(s=>{
+    const matchQ=!q||s.name.toLowerCase().includes(q)||s.roll.includes(q);
+    const matchS=!sem||s.sem===sem;
+    return matchQ&&matchS;
+  });
+  document.getElementById('count-badge').textContent=`${filtered.length} student${filtered.length!==1?'s':''}`;
+  const grid=document.getElementById('students-grid');
+  if(!filtered.length){grid.innerHTML='<div class="no-results">No students found.</div>';return}
+  grid.innerHTML=filtered.map(s=>`
+    <div class="student-card" onclick="openEdit(${s.id})">
+      <div class="avatar" style="background:${getColor(s.name)}">${initials(s.name)}</div>
+      <div class="student-name">${s.name}</div>
+      <div class="student-roll">Roll: ${s.roll} &nbsp;·&nbsp; Sem ${s.sem}</div>
+      <div class="student-contact">
+        ${s.phone?`<a href="tel:${s.phone}" onclick="event.stopPropagation()">📞</a>`:''}
+        ${s.email?`<a href="mailto:${s.email}" onclick="event.stopPropagation()">✉️</a>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function openModal(id){
+  editingId=id||null;
+  if(id){
+    const s=getStudents().find(x=>x.id===id);
+    if(!s)return;
+    document.getElementById('modal-title').textContent='Edit Student';
+    document.getElementById('s-name').value=s.name;
+    document.getElementById('s-roll').value=s.roll;
+    document.getElementById('s-sem').value=s.sem;
+    document.getElementById('s-phone').value=s.phone||'';
+    document.getElementById('s-email').value=s.email||'';
+  } else {
+    document.getElementById('modal-title').textContent='Add Student';
+    document.getElementById('s-name').value='';document.getElementById('s-roll').value='';
+    document.getElementById('s-phone').value='';document.getElementById('s-email').value='';
+  }
+  document.getElementById('addModal').classList.add('open');
+}
+function openEdit(id){openModal(id)}
+function closeModal(){document.getElementById('addModal').classList.remove('open')}
+function saveStudent(){
+  const name=document.getElementById('s-name').value.trim();
+  const roll=document.getElementById('s-roll').value.trim();
+  const sem=document.getElementById('s-sem').value;
+  const phone=document.getElementById('s-phone').value.trim();
+  const email=document.getElementById('s-email').value.trim();
+  if(!name||!roll){alert('Name and roll required.');return}
+  const arr=getStudents();
+  if(editingId){
+    const idx=arr.findIndex(x=>x.id===editingId);
+    if(idx>=0)arr[idx]={...arr[idx],name,roll,sem,phone,email};
+  } else {
+    arr.push({id:Date.now(),name,roll,sem,phone,email});
+  }
+  saveStudents(arr);closeModal();renderStudents();
+}
+function toggleMenu(){const m=document.getElementById('mobileMenu');m.style.display=m.style.display==='flex'?'none':'flex'}
+renderStudents();
+</script>
+</body>
+</html>

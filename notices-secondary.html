@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>General Notices — ECE Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#1a56db;--blue-dark:#1040b0;--blue-light:#e8f0fe;--navy:#0a1628;--white:#ffffff;--gray:#f4f6fb;--text:#1e2535;--muted:#6b7a99;--accent:#f59e0b;--border:#dde4f0}
+body{font-family:'DM Sans',sans-serif;background:var(--gray);color:var(--text)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:var(--blue);text-decoration:none;display:flex;align-items:center;gap:10px}
+.nav-logo .dot{width:8px;height:8px;background:var(--accent);border-radius:50%}
+.nav-links{display:flex;gap:0.25rem;list-style:none}
+.nav-links a{text-decoration:none;color:var(--text);font-size:0.875rem;font-weight:500;padding:6px 14px;border-radius:6px;transition:all 0.2s}
+.nav-links a:hover,.nav-links a.active{background:var(--blue-light);color:var(--blue)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px}
+.mobile-menu{display:none;flex-direction:column;gap:4px;background:#fff;padding:1rem;border-top:1px solid var(--border)}
+.mobile-menu a{text-decoration:none;color:var(--text);font-size:0.95rem;padding:10px 14px;border-radius:8px;font-weight:500;display:block}
+.page-hero{background:linear-gradient(135deg,#1d4ed8,#1a56db);padding:6rem 2rem 3rem;text-align:center}
+.page-hero .label{font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#bfdbfe;margin-bottom:0.75rem}
+.page-hero h1{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:0.5rem}
+.page-hero p{color:#bfdbfe;font-size:1rem}
+main{max-width:800px;margin:0 auto;padding:2.5rem 1.5rem}
+.notice-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem;border-left:4px solid #93c5fd;transition:box-shadow 0.2s}
+.notice-card:hover{box-shadow:0 4px 16px rgba(26,86,219,0.08)}
+.notice-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:0.6rem}
+.notice-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem}
+.tag{font-size:0.7rem;padding:3px 10px;border-radius:6px;font-weight:600;white-space:nowrap;background:#eff6ff;color:#1d4ed8}
+.notice-body{color:var(--muted);font-size:0.9rem;line-height:1.6;margin-bottom:0.5rem}
+.notice-meta{font-size:0.78rem;color:#9ca3af}
+.add-section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:2rem}
+.add-section summary{font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;color:var(--blue);font-size:0.95rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group.full{grid-column:1/-1}
+label{font-size:0.8rem;font-weight:500;color:var(--muted)}
+input,select,textarea{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--text);background:#fff;outline:none;transition:border-color 0.2s}
+input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+textarea{resize:vertical;min-height:80px}
+.btn-submit{background:var(--blue);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;font-size:0.9rem;margin-top:0.5rem}
+@media(max-width:768px){.nav-links{display:none}.hamburger{display:flex}nav{padding:0 1rem}.form-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="dot"></span>ECE Portal</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="notices.html">Main Notices</a></li>
+      <li><a href="notices-secondary.html" class="active">General Notices</a></li>
+      <li><a href="semesters.html">Semesters</a></li>
+      <li><a href="routine.html">Routine</a></li>
+      <li><a href="students.html">Students</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a><a href="notices.html">Main Notices</a><a href="notices-secondary.html">General Notices</a><a href="semesters.html">Semesters</a><a href="routine.html">Routine</a><a href="students.html">Students</a>
+  </div>
+</nav>
+<div class="page-hero">
+  <div class="label">General Announcements</div>
+  <h1>📋 General Notices</h1>
+  <p>Non-urgent information, events, and general departmental updates</p>
+</div>
+<main>
+  <details class="add-section">
+    <summary>➕ Add General Notice</summary>
+    <div class="form-grid">
+      <div class="form-group full"><label>Title</label><input type="text" id="n-title" placeholder="Notice title"/></div>
+      <div class="form-group full"><label>Details</label><textarea id="n-body" placeholder="Notice details..."></textarea></div>
+      <div class="form-group"><label>File Link (optional)</label><input type="url" id="n-file" placeholder="Google Drive URL"/></div>
+    </div>
+    <button class="btn-submit" onclick="addNotice()">Post Notice</button>
+  </details>
+  <div id="notices-list"></div>
+</main>
+<script>
+const KEY='ece_gen_notices';
+const defaults=[
+  {id:1,title:'Library Access Hours Updated',body:'The library will be open from 8 AM to 10 PM during the exam period. Weekend access is also available from 9 AM to 6 PM.',date:'3 days ago',file:''},
+  {id:2,title:'Departmental Picnic — End of Semester',body:'We are planning a departmental picnic at the end of this semester. Please share your availability with the CR by next week so we can finalize the date.',date:'4 days ago',file:''},
+  {id:3,title:'New Study Room Booking System',body:'A new online system is available for booking study rooms in the department building. Contact CR for access credentials.',date:'1 week ago',file:''},
+  {id:4,title:'Mentorship Program Applications Open',body:'Senior students are invited to apply for the departmental mentorship program. Applications are open until the end of the month.',date:'2 weeks ago',file:''},
+];
+function getNotices(){const d=localStorage.getItem(KEY);return d?JSON.parse(d):defaults}
+function saveNotices(arr){localStorage.setItem(KEY,JSON.stringify(arr))}
+function renderNotices(){
+  const arr=getNotices();
+  document.getElementById('notices-list').innerHTML=arr.map(n=>`
+    <div class="notice-card">
+      <div class="notice-top"><div class="notice-title">${n.title}</div><span class="tag">General</span></div>
+      <div class="notice-body">${n.body}</div>
+      ${n.file?`<a href="${n.file}" target="_blank" style="color:var(--blue);font-size:0.82rem">📎 Attachment</a>`:''}
+      <div class="notice-meta" style="margin-top:0.5rem">🗓 ${n.date}</div>
+    </div>`).join('');
+}
+function addNotice(){
+  const title=document.getElementById('n-title').value.trim();
+  const body=document.getElementById('n-body').value.trim();
+  const file=document.getElementById('n-file').value.trim();
+  if(!title||!body){alert('Please fill in title and details.');return}
+  const arr=getNotices();
+  arr.unshift({id:Date.now(),title,body,date:'Just now',file});
+  saveNotices(arr);renderNotices();
+  document.getElementById('n-title').value='';document.getElementById('n-body').value='';
+}
+function toggleMenu(){const m=document.getElementById('mobileMenu');m.style.display=m.style.display==='flex'?'none':'flex'}
+renderNotices();
+</script>
+</body>
+</html>
